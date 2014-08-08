@@ -14,25 +14,21 @@ data[,"Sub_metering_3"] <- as.numeric(as.character(data[,"Sub_metering_3"]))
 data[,"Voltage"] <- as.numeric(as.character(data[,"Voltage"]))
 data[,"Global_reactive_power"] <- as.numeric(as.character(data[,"Global_reactive_power"]))
 
-day <- c(rep("Fri", length(which(data[,"Date"]=="1/2/2007"))), rep("Sat", length(which(data[,"Date"]=="2/2/2007"))))
-day[1] <- "Thu"
+time <- paste(data[,"Date"], data[,"Time"], sep=" ")
+time <- strptime(time, format="%d/%m/%Y %H:%M:%S")
 
 # topleft figure
-plot(data[,"Global_active_power"], ylab="Global Active Power (kilowatts)",  xlab="TODO: Dates", type="l", xaxt='n', col="black")
-axis(1, at=c(1, length(which(data[,"Date"]=="1/2/2007"))-1, length(data[,"Date"])), labels=c("Thu", "Fri", "Sat"))
+plot(time, data[,"Global_active_power"], ylab="Global Active Power (kilowatts)",  xlab="", type="l", col="black")
 
 # topright figure
-plot(data[,"Voltage"], ylab="Voltage",  xlab="TODO: Dates datetimes", type="l", col="black", xaxt='n')
-axis(1, at=c(1, length(which(data[,"Date"]=="1/2/2007"))-1, length(data[,"Date"])), labels=c("Thu", "Fri", "Sat"))
+plot(time, data[,"Voltage"], ylab="Voltage",  xlab="datetime", type="l", col="black")
 
 # bottomleft figure
-plot(data[,"Sub_metering_1"],  ylab="Energy sub metering",  xlab=" TODO Dates", type="l", col="black", xaxt='n')
-axis(1, at=c(1, length(which(data[,"Date"]=="1/2/2007"))-1, length(data[,"Date"])), labels=c("Thu", "Fri", "Sat"))
-lines(data[,"Sub_metering_2"], lty=1, col="red")
-lines(data[,"Sub_metering_3"], lty=1, col="blue")
+plot(time, data[,"Sub_metering_1"],  ylab="Energy sub metering",  xlab="", type="l", col="black")
+lines(time, data[,"Sub_metering_2"], lty=1, col="red")
+lines(time, data[,"Sub_metering_3"], lty=1, col="blue")
 legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col=c("black", "red", "blue"), lty=c(1,1,1))
 
 # bottomright figure
-plot(data[,"Global_reactive_power"], ylab="Global_reactive_power",  xlab="TODO: Dates datetimes", type="l", col="black", xaxt='n')
-axis(1, at=c(1, length(which(data[,"Date"]=="1/2/2007"))-1, length(data[,"Date"])), labels=c("Thu", "Fri", "Sat"))
+plot(time, data[,"Global_reactive_power"], ylab="Global_reactive_power",  xlab="datetime", type="l", col="black")
 dev.off()

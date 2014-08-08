@@ -7,11 +7,12 @@ data <- read.delim("household_power_consumption.txt", sep=";")
 data[,"Date"] <- as.character(data[,"Date"])
 data <- data[which((data[,"Date"]=="1/2/2007")|(data[,"Date"]=="2/2/2007")),]
 
+time <- paste(data[,"Date"], data[,"Time"], sep=" ")
+time <- strptime(time, format="%d/%m/%Y %H:%M:%S")
+
 data[,"Global_active_power"] <- as.numeric(as.character(data[,"Global_active_power"]))
-day <- c(rep("Fri", length(which(data[,"Date"]=="1/2/2007"))), rep("Sat", length(which(data[,"Date"]=="2/2/2007"))))
-day[1] <- "Thu"
+
 
 png("plot2.png", width=480, height=480)
-plot(data[,"Global_active_power"], ylab="Global Active Power (kilowatts)",  xlab="TODO: Dates", type="l", xaxt='n', col="black")
-axis(1, at=c(1, length(which(data[,"Date"]=="1/2/2007"))-1, length(data[,"Date"])), labels=c("Thu", "Fri", "Sat"))
+plot(time, data[,"Global_active_power"], ylab="Global Active Power (kilowatts)", type="l", col="black", xlab="")
 dev.off()
